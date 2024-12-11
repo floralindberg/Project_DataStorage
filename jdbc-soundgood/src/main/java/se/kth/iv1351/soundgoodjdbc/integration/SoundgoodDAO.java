@@ -56,8 +56,13 @@ public class SoundgoodDAO {
     }
 
     private void connectToSoundGoodDB() throws ClassNotFoundException, SQLException {
+<<<<<<< Updated upstream
         connection = DriverManager.getConnection("jdbc:postgresql://localhost:5433/soundgood",
                 "postgres", "123");
+=======
+        connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sgms",
+                "postgres", "1234");
+>>>>>>> Stashed changes
         connection.setAutoCommit(false);
     }
 
@@ -82,7 +87,7 @@ public class SoundgoodDAO {
 
         findAllRentals = connection.prepareStatement(
                 "SELECT s." + STUDENT_PK_NAME + ", CONCAT(p.first_name, ' ', p.last_name) AS " + NAME_STUDENT + ", " +
-                        " i." + INSTRUMENT_COLUMN_NAME + " , ai." + AVAIL_INSTR_BRAND_NAME + " , ai."
+                        " i." + INSTRUMENT_COLUMN_NAME + " , ai." + AVAIL_INSTR_BRAND_NAME + " , r."
                         + AVAIL_INSTR_PRICE_NAME + " , r." +
                         RENTAL_STATUS_NAME + ", ai." + AVAIL_INSTR_PK_NAME +
                         " FROM " + STUDENT_TABLE_NAME + " s " +
@@ -95,7 +100,7 @@ public class SoundgoodDAO {
 
         findSpecificRental = connection.prepareStatement(
                 "SELECT s." + STUDENT_PK_NAME + ", CONCAT(p.first_name, ' ', p.last_name) AS " + NAME_STUDENT + ", " +
-                        " i." + INSTRUMENT_COLUMN_NAME + " , ai." + AVAIL_INSTR_BRAND_NAME + " , ai."
+                        " i." + INSTRUMENT_COLUMN_NAME + " , ai." + AVAIL_INSTR_BRAND_NAME + " , r."
                         + AVAIL_INSTR_PRICE_NAME + " , r." +
                         RENTAL_STATUS_NAME + ", ai." + AVAIL_INSTR_PK_NAME +
                         " FROM " + STUDENT_TABLE_NAME + " s " +
@@ -150,7 +155,8 @@ public class SoundgoodDAO {
         return availableInstrument;
     }
 
-    public List<AvailableInstrument> findSpecificAvailableInstruments(String instrument) throws SoundgoodDBException, SQLException {
+    public List<AvailableInstrument> findSpecificAvailableInstruments(String instrument)
+            throws SoundgoodDBException, SQLException {
         String failureMsg = "Could not list instruments.";
         findSpecificAvailableInstruments.setString(1, instrument);
         List<AvailableInstrument> availableInstrument = new ArrayList<>();
@@ -168,18 +174,23 @@ public class SoundgoodDAO {
         return availableInstrument;
     }
 
+    private void addRentals(List<Rental> rentals, ResultSet result) throws SoundgoodDBException, SQLException {
+
+        rentals.add(new Rental(result.getString(STUDENT_PK_NAME),
+                result.getString(AVAIL_INSTR_PK_NAME),
+                result.getString(NAME_STUDENT),
+                result.getString(INSTRUMENT_COLUMN_NAME),
+                result.getString(AVAIL_INSTR_BRAND_NAME),
+                result.getString(AVAIL_INSTR_PRICE_NAME),
+                result.getString(RENTAL_STATUS_NAME)));
+    }
+
     public List<Rental> findaAllRentals() throws SoundgoodDBException {
         String failureMsg = "Could not find rentals";
         List<Rental> rentals = new ArrayList<>();
         try (ResultSet result = findAllRentals.executeQuery()) {
             while (result.next()) {
-                rentals.add(new Rental(result.getString(STUDENT_PK_NAME),
-                        result.getString(AVAIL_INSTR_PK_NAME),
-                        result.getString(NAME_STUDENT),
-                        result.getString(INSTRUMENT_COLUMN_NAME),
-                        result.getString(AVAIL_INSTR_BRAND_NAME),
-                        result.getString(AVAIL_INSTR_PRICE_NAME),
-                        result.getString(RENTAL_STATUS_NAME)));
+                addRentals(rentals, result);
             }
             connection.commit();
         } catch (SQLException sqle) {
@@ -195,13 +206,7 @@ public class SoundgoodDAO {
         List<Rental> rentals = new ArrayList<>();
         try (ResultSet result = findSpecificRental.executeQuery()) {
             while (result.next()) {
-                rentals.add(new Rental(result.getString(STUDENT_PK_NAME),
-                        result.getString(AVAIL_INSTR_PK_NAME),
-                        result.getString(NAME_STUDENT),
-                        result.getString(INSTRUMENT_COLUMN_NAME),
-                        result.getString(AVAIL_INSTR_BRAND_NAME),
-                        result.getString(AVAIL_INSTR_PRICE_NAME),
-                        result.getString(RENTAL_STATUS_NAME)));
+                addRentals(rentals, result);
             }
             connection.commit();
         } catch (SQLException sqle) {
@@ -230,7 +235,25 @@ public class SoundgoodDAO {
         String failureMsg = "Could not create the rental for student with id: " + rental.getStudentId()
                 + ", and available instrument id: " + rental.getAvailableInstrumentId();
         int updatedRows = 0;
+<<<<<<< Updated upstream
         int availInstrumentId = Integer.valueOf(rental.getAvailableInstrumentId());
+=======
+        int student = Integer.valueOf(studentId);
+        int availInstrumentId = Integer.valueOf(availableInstrumentId);
+        String rentingPeriod = "365";
+        String status = "Active";
+        LocalDate start = LocalDate.now();
+        LocalDate end = start.plusDays(365);
+        LocalDateTime startDateTime = start.atStartOfDay();
+        LocalDateTime endDateTime = end.atStartOfDay();
+        Timestamp startTime = Timestamp.valueOf(startDateTime);
+        Timestamp endTime = Timestamp.valueOf(endDateTime);
+
+        findPriceForRental.setInt(1, availInstrumentId);
+        try (ResultSet result = findPriceForRental.executeQuery()) {
+            if (result.next()) {
+                String price = result.getString(1);
+>>>>>>> Stashed changes
 
         lockAvailableInstrument.setInt(1, availInstrumentId);
         try (ResultSet result = lockAvailableInstrument.executeQuery();) {
@@ -244,13 +267,13 @@ public class SoundgoodDAO {
                 createRental.setTimestamp(5, rental.getEndDate());
                 createRental.setString(6, rental.getStatus());
                 createRental.setString(7, price);
-                }
-                updatedRows = createRental.executeUpdate();
+            }
+            updatedRows = createRental.executeUpdate();
 
-                if (updatedRows != 1) {
-                    handleException(failureMsg, null);
-                }
-                connection.commit();
+            if (updatedRows != 1) {
+                handleException(failureMsg, null);
+            }
+            connection.commit();
         } catch (SQLException sqle) {
             handleException(failureMsg, sqle);
         }
