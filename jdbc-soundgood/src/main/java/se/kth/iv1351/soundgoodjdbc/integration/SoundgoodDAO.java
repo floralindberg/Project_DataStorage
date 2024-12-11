@@ -55,8 +55,8 @@ public class SoundgoodDAO {
     }
 
     private void connectToSoundGoodDB() throws ClassNotFoundException, SQLException {
-        connection = DriverManager.getConnection("jdbc:postgresql://localhost:5433/soundgood",
-                "postgres", "123");
+        connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sgms",
+                "postgres", "1234");
         connection.setAutoCommit(false);
     }
 
@@ -81,7 +81,7 @@ public class SoundgoodDAO {
 
         findAllRentals = connection.prepareStatement(
                 "SELECT s." + STUDENT_PK_NAME + ", CONCAT(p.first_name, ' ', p.last_name) AS " + NAME_STUDENT + ", " +
-                        " i." + INSTRUMENT_COLUMN_NAME + " , ai." + AVAIL_INSTR_BRAND_NAME + " , r."
+                        " i." + INSTRUMENT_COLUMN_NAME + " , ai." + AVAIL_INSTR_BRAND_NAME + " , ai."
                         + AVAIL_INSTR_PRICE_NAME + " , r." +
                         RENTAL_STATUS_NAME + ", ai." + AVAIL_INSTR_PK_NAME +
                         " FROM " + STUDENT_TABLE_NAME + " s " +
@@ -94,7 +94,7 @@ public class SoundgoodDAO {
 
         findSpecificRental = connection.prepareStatement(
                 "SELECT s." + STUDENT_PK_NAME + ", CONCAT(p.first_name, ' ', p.last_name) AS " + NAME_STUDENT + ", " +
-                        " i." + INSTRUMENT_COLUMN_NAME + " , ai." + AVAIL_INSTR_BRAND_NAME + " , r."
+                        " i." + INSTRUMENT_COLUMN_NAME + " , ai." + AVAIL_INSTR_BRAND_NAME + " , ai."
                         + AVAIL_INSTR_PRICE_NAME + " , r." +
                         RENTAL_STATUS_NAME + ", ai." + AVAIL_INSTR_PK_NAME +
                         " FROM " + STUDENT_TABLE_NAME + " s " +
