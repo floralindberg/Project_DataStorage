@@ -36,7 +36,6 @@ public class SoundgoodDAO {
     private Connection connection;
     private PreparedStatement findAllAvailableInstruments;
     private PreparedStatement findSpecificAvailableInstruments;
-    private PreparedStatement findPriceForRental;
     private PreparedStatement createRental;
     private PreparedStatement findAllRentals;
     private PreparedStatement findSpecificRental;
@@ -80,11 +79,6 @@ public class SoundgoodDAO {
                         + INSTRUMENT_PK_NAME +
                         " WHERE i." + INSTRUMENT_COLUMN_NAME + " = ?" + " AND ai." + AVAIL_INSTR_QUANTITY_NAME +
                         " > '0'");
-
-        /*findPriceForRental = connection.prepareStatement(
-                "SELECT ai." + AVAIL_INSTR_PRICE_NAME +
-                        " FROM " + AVAIL_INSTR_TABLE_NAME + " ai" +
-                        " WHERE ai." + AVAIL_INSTR_PK_NAME + " = ?");*/
 
         findAllRentals = connection.prepareStatement(
                 "SELECT s." + STUDENT_PK_NAME + ", CONCAT(p.first_name, ' ', p.last_name) AS " + NAME_STUDENT + ", " +
