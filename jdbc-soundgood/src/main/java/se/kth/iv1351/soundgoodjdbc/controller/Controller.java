@@ -8,6 +8,7 @@ import se.kth.iv1351.soundgoodjdbc.model.AvailableInstrumentDTO;
 import se.kth.iv1351.soundgoodjdbc.model.AvailableInstrumentException;
 import se.kth.iv1351.soundgoodjdbc.model.RentalDTO;
 import se.kth.iv1351.soundgoodjdbc.model.RentalException;
+import se.kth.iv1351.soundgoodjdbc.model.CreateRental;
 
 public class Controller{
     private final SoundgoodDAO soundDb;
@@ -56,7 +57,7 @@ public class Controller{
         }
 
         try {
-            soundDb.createRental(studentId, availInstrId);
+            soundDb.createRental(new CreateRental(studentId, availInstrId));
         } catch (Exception e) {
             throw new RentalException(failureMsg, e);
         }
