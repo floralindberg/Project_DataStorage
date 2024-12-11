@@ -12,7 +12,6 @@ import se.kth.iv1351.soundgoodjdbc.model.AvailableInstrument;
 import se.kth.iv1351.soundgoodjdbc.model.Rental;
 import se.kth.iv1351.soundgoodjdbc.model.CreateRentalDTO;
 
-
 public class SoundgoodDAO {
     private static final String INSTRUMENT_COLUMN_NAME = "instrument_name";
     private static final String INSTRUMENT_TABLE_NAME = "instrument";
@@ -56,13 +55,8 @@ public class SoundgoodDAO {
     }
 
     private void connectToSoundGoodDB() throws ClassNotFoundException, SQLException {
-<<<<<<< Updated upstream
         connection = DriverManager.getConnection("jdbc:postgresql://localhost:5433/soundgood",
                 "postgres", "123");
-=======
-        connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sgms",
-                "postgres", "1234");
->>>>>>> Stashed changes
         connection.setAutoCommit(false);
     }
 
@@ -235,25 +229,7 @@ public class SoundgoodDAO {
         String failureMsg = "Could not create the rental for student with id: " + rental.getStudentId()
                 + ", and available instrument id: " + rental.getAvailableInstrumentId();
         int updatedRows = 0;
-<<<<<<< Updated upstream
         int availInstrumentId = Integer.valueOf(rental.getAvailableInstrumentId());
-=======
-        int student = Integer.valueOf(studentId);
-        int availInstrumentId = Integer.valueOf(availableInstrumentId);
-        String rentingPeriod = "365";
-        String status = "Active";
-        LocalDate start = LocalDate.now();
-        LocalDate end = start.plusDays(365);
-        LocalDateTime startDateTime = start.atStartOfDay();
-        LocalDateTime endDateTime = end.atStartOfDay();
-        Timestamp startTime = Timestamp.valueOf(startDateTime);
-        Timestamp endTime = Timestamp.valueOf(endDateTime);
-
-        findPriceForRental.setInt(1, availInstrumentId);
-        try (ResultSet result = findPriceForRental.executeQuery()) {
-            if (result.next()) {
-                String price = result.getString(1);
->>>>>>> Stashed changes
 
         lockAvailableInstrument.setInt(1, availInstrumentId);
         try (ResultSet result = lockAvailableInstrument.executeQuery();) {
@@ -279,18 +255,19 @@ public class SoundgoodDAO {
         }
     }
 
-    public void terminateRental(String studentId, String availableInstrumentId) throws SoundgoodDBException, SQLException{
+    public void terminateRental(String studentId, String availableInstrumentId)
+            throws SoundgoodDBException, SQLException {
         String failureMsg = "Could not end the rental for student with id: " + studentId
                 + ", and available instrument id: " + availableInstrumentId;
         int updatedRows = 0;
         int student = Integer.valueOf(studentId);
         int availInstrumentId = Integer.valueOf(availableInstrumentId);
 
-        lockRental.setInt(1,student);
+        lockRental.setInt(1, student);
         lockRental.setInt(2, availInstrumentId);
 
-        try (ResultSet result = lockRental.executeQuery();){
-            if(result.next()){
+        try (ResultSet result = lockRental.executeQuery();) {
+            if (result.next()) {
                 terminateRental.setInt(1, student);
                 terminateRental.setInt(2, availInstrumentId);
 
