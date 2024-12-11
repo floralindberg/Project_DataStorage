@@ -1,10 +1,10 @@
 package se.kth.iv1351.soundgoodjdbc.model;
 
 public class AvailableInstrument implements AvailableInstrumentDTO {
-    private String brand;
-    private String price;
-    private String quantity;
-    private String instrumentName;
+    private final String brand;
+    private final String price;
+    private final String quantity;
+    private final String instrumentName;
 
     public AvailableInstrument(String instrumentName, String brand, String quantity, String price){
         this.brand = brand;
@@ -14,19 +14,23 @@ public class AvailableInstrument implements AvailableInstrumentDTO {
 
     }
     
+    @Override
     public String getBrand() {
         return brand;
 
     }
 
+    @Override
     public String getPrice(){
         return price;
     }
 
+    @Override
     public String getQuantity(){
         return quantity;
     }
 
+    @Override
     public String getInstrumentName(){
         return instrumentName;
     }
