@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import se.kth.iv1351.soundgoodjdbc.model.AvailableInstrument;
-import se.kth.iv1351.soundgoodjdbc.model.Rental;
 import se.kth.iv1351.soundgoodjdbc.model.CreateRentalDTO;
+import se.kth.iv1351.soundgoodjdbc.model.Rental;
 
 public class SoundgoodDAO {
     private static final String INSTRUMENT_COLUMN_NAME = "instrument_name";
@@ -197,7 +197,7 @@ public class SoundgoodDAO {
 
     public List<Rental> findSpecificRental(String id) throws SoundgoodDBException, SQLException {
         String failureMsg = "Could not find rentals";
-        int studentId = Integer.valueOf(id);
+        int studentId = Integer.parseInt(id);
         findSpecificRental.setInt(1, studentId);
         List<Rental> rentals = new ArrayList<>();
         try (ResultSet result = findSpecificRental.executeQuery()) {
@@ -231,7 +231,7 @@ public class SoundgoodDAO {
         String failureMsg = "Could not create the rental for student with id: " + rental.getStudentId()
                 + ", and available instrument id: " + rental.getAvailableInstrumentId();
         int updatedRows = 0;
-        int availInstrumentId = Integer.valueOf(rental.getAvailableInstrumentId());
+        int availInstrumentId = Integer.parseInt(rental.getAvailableInstrumentId());
 
         lockAvailableInstrument.setInt(1, availInstrumentId);
         try (ResultSet result = lockAvailableInstrument.executeQuery();) {
@@ -239,7 +239,7 @@ public class SoundgoodDAO {
                 String price = result.getString(2);
 
                 createRental.setString(1, rental.getMaximumRentingPeriod());
-                createRental.setInt(2, Integer.valueOf(rental.getStudentId()));
+                createRental.setInt(2, Integer.parseInt(rental.getStudentId()));
                 createRental.setInt(3, availInstrumentId);
                 createRental.setTimestamp(4, rental.getStartDate());
                 createRental.setTimestamp(5, rental.getEndDate());
@@ -257,13 +257,13 @@ public class SoundgoodDAO {
         }
     }
 
-    public void terminateRental(String studentId, String availableInstrumentId)
+    public void updateTerminateRental(String studentId, String availableInstrumentId)
             throws SoundgoodDBException, SQLException {
         String failureMsg = "Could not end the rental for student with id: " + studentId
                 + ", and available instrument id: " + availableInstrumentId;
         int updatedRows = 0;
-        int student = Integer.valueOf(studentId);
-        int availInstrumentId = Integer.valueOf(availableInstrumentId);
+        int student = Integer.parseInt(studentId);
+        int availInstrumentId = Integer.parseInt(availableInstrumentId);
 
         lockRental.setInt(1, student);
         lockRental.setInt(2, availInstrumentId);

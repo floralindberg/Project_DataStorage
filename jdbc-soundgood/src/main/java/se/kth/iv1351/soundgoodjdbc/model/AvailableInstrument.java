@@ -7,6 +7,7 @@ public class AvailableInstrument implements AvailableInstrumentDTO {
     private String instrumentName;
     private String availableInstrumentId;
 
+
     public AvailableInstrument(String instrumentName, String brand, String quantity, String price, String availableInstrumentId){
         this.brand = brand;
         this.price = price;
@@ -16,19 +17,23 @@ public class AvailableInstrument implements AvailableInstrumentDTO {
 
     }
     
+    @Override
     public String getBrand() {
         return brand;
 
     }
 
+    @Override
     public String getPrice(){
         return price;
     }
 
+    @Override
     public String getQuantity(){
         return quantity;
     }
 
+    @Override
     public String getInstrumentName(){
         return instrumentName;
     }
