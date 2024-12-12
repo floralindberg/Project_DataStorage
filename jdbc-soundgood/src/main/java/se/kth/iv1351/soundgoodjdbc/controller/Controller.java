@@ -71,7 +71,7 @@ public class Controller{
         }
 
         try {
-            soundDb.terminateRental(studentId, availInstrId);
+            soundDb.updateTerminateRental(studentId, availInstrId);
         } catch (Exception e) {
             throw new RentalException(failureMsg, e);
         }
