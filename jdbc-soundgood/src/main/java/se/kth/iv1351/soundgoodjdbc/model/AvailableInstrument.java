@@ -38,6 +38,7 @@ public class AvailableInstrument implements AvailableInstrumentDTO {
         return instrumentName;
     }
 
+    @Override
     public String getAvailableInstrumentId(){
         return availableInstrumentId;
     }
