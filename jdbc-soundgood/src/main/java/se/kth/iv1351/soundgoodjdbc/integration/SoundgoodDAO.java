@@ -55,15 +55,15 @@ public class SoundgoodDAO {
     }
 
     private void connectToSoundGoodDB() throws ClassNotFoundException, SQLException {
-        connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sgms",
-                "postgres", "1234");
+        connection = DriverManager.getConnection("jdbc:postgresql://localhost:5433/soundgood",
+                "postgres", "123");
         connection.setAutoCommit(false);
     }
 
     private void prepareStatements() throws SQLException {
         findAllAvailableInstruments = connection.prepareStatement(
                 "SELECT i." + INSTRUMENT_COLUMN_NAME + ", ai." + AVAIL_INSTR_BRAND_NAME + ", ai."
-                        + AVAIL_INSTR_PRICE_NAME + ", ai." + AVAIL_INSTR_QUANTITY_NAME +
+                        + AVAIL_INSTR_PRICE_NAME + ", ai." + AVAIL_INSTR_QUANTITY_NAME + ", ai." + AVAIL_INSTR_PK_NAME +
                         " FROM " + AVAIL_INSTR_TABLE_NAME + " ai" +
                         " JOIN " + INSTRUMENT_TABLE_NAME + " i ON i." + INSTRUMENT_PK_NAME + " = ai."
                         + INSTRUMENT_PK_NAME +
@@ -72,7 +72,7 @@ public class SoundgoodDAO {
 
         findSpecificAvailableInstruments = connection.prepareStatement(
                 "SELECT i." + INSTRUMENT_COLUMN_NAME + ", ai." + AVAIL_INSTR_BRAND_NAME + ", ai."
-                        + AVAIL_INSTR_PRICE_NAME + ", ai." + AVAIL_INSTR_QUANTITY_NAME +
+                        + AVAIL_INSTR_PRICE_NAME + ", ai." + AVAIL_INSTR_QUANTITY_NAME + ", ai." + AVAIL_INSTR_PK_NAME +
                         " FROM " + AVAIL_INSTR_TABLE_NAME + " ai" +
                         " JOIN " + INSTRUMENT_TABLE_NAME + " i ON i." + INSTRUMENT_PK_NAME + " = ai."
                         + INSTRUMENT_PK_NAME +
@@ -140,7 +140,8 @@ public class SoundgoodDAO {
                 availableInstrument.add(new AvailableInstrument(result.getString(INSTRUMENT_COLUMN_NAME),
                         result.getString(AVAIL_INSTR_BRAND_NAME),
                         result.getString(AVAIL_INSTR_QUANTITY_NAME),
-                        result.getString(AVAIL_INSTR_PRICE_NAME)));
+                        result.getString(AVAIL_INSTR_PRICE_NAME),
+                        result.getString(AVAIL_INSTR_PK_NAME)));
             }
             connection.commit();
         } catch (SQLException sqle) {
@@ -159,7 +160,8 @@ public class SoundgoodDAO {
                 availableInstrument.add(new AvailableInstrument(result.getString(INSTRUMENT_COLUMN_NAME),
                         result.getString(AVAIL_INSTR_BRAND_NAME),
                         result.getString(AVAIL_INSTR_QUANTITY_NAME),
-                        result.getString(AVAIL_INSTR_PRICE_NAME)));
+                        result.getString(AVAIL_INSTR_PRICE_NAME),
+                        result.getString(AVAIL_INSTR_PK_NAME)));
             }
             connection.commit();
         } catch (SQLException sqle) {

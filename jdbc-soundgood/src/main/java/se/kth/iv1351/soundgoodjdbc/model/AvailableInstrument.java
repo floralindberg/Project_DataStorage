@@ -5,12 +5,14 @@ public class AvailableInstrument implements AvailableInstrumentDTO {
     private String price;
     private String quantity;
     private String instrumentName;
+    private String availableInstrumentId;
 
-    public AvailableInstrument(String instrumentName, String brand, String quantity, String price){
+    public AvailableInstrument(String instrumentName, String brand, String quantity, String price, String availableInstrumentId){
         this.brand = brand;
         this.price = price;
         this.quantity = quantity;
         this.instrumentName = instrumentName;
+        this.availableInstrumentId = availableInstrumentId;
 
     }
     
@@ -29,6 +31,10 @@ public class AvailableInstrument implements AvailableInstrumentDTO {
 
     public String getInstrumentName(){
         return instrumentName;
+    }
+
+    public String getAvailableInstrumentId(){
+        return availableInstrumentId;
     }
 
 

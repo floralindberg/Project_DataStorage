@@ -89,7 +89,8 @@ public class BlockingInterpreter {
                             System.out.println("instrument name: " + instrument.getInstrumentName() + ", "
                                             + "instrument brand: " + instrument.getBrand() + ", "
                                             + "quantity: " + instrument.getQuantity() + ", "
-                                            + "price: " + instrument.getPrice());
+                                            + "price: " + instrument.getPrice()+ ", "
+                                            + "available instrument id: " + instrument.getAvailableInstrumentId());
                         }
                         break;
                     case RENT:

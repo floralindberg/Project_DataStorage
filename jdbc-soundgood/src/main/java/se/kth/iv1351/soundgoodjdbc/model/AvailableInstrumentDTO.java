@@ -10,4 +10,6 @@ public interface AvailableInstrumentDTO {
 
     public String getInstrumentName();
 
+    public String getAvailableInstrumentId();
+
 }
